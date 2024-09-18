@@ -81,7 +81,7 @@ export default function AddSubscriptionForm({
           value: service.id,
           label: service.name,
         }))}
-        onChange={(selectedOption) =>
+        onChange={(selectedOption: any) =>
           setFormData({ ...formData, serviceId: selectedOption?.value || "" })
         }
         placeholder="Select a service"
@@ -120,7 +120,7 @@ export default function AddSubscriptionForm({
           { value: "monthly", label: "Monthly" },
           { value: "yearly", label: "Yearly" },
         ]}
-        onChange={(selectedOption) =>
+        onChange={(selectedOption: any) =>
           setFormData({
             ...formData,
             billingCycle: selectedOption?.value || "monthly",
