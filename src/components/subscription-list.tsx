@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import SubscriptionCard from "./subscription-card";
-
-const prisma = new PrismaClient();
 
 export default async function SubscriptionList() {
   const subscriptions = await prisma.subscription.findMany();
