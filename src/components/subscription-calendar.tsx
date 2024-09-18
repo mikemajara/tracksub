@@ -40,35 +40,31 @@ const Calendar: React.FC<CalendarProps> = ({ subscriptions }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="flex justify-between items-center mb-4">
+    <div className="w-full max-w-4xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
         <button onClick={prevMonth} className="p-2">
           <ChevronLeft className="h-6 w-6" />
         </button>
-        <h2 className="text-xl font-bold">
+        <h2 className="text-2xl font-bold">
           {format(currentMonth, "MMMM yyyy")}
         </h2>
         <button onClick={nextMonth} className="p-2">
           <ChevronRight className="h-6 w-6" />
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-2 mb-2">
+      <div className="grid grid-cols-7 gap-4 mb-4">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <div
             key={day}
-            className={`text-center font-medium ${
-              isSameDay(today, new Date()) && format(today, "EEE") === day
-                ? "font-bold"
-                : ""
-            }`}
+            className="text-center font-medium bg-neutral-200 dark:bg-neutral-700 rounded-full py-1"
           >
             {day}
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-4">
         {Array.from({ length: startDayOfWeek }).map((_, index) => (
-          <div key={`empty-${index}`} className="h-24"></div>
+          <div key={`empty-${index}`} className="aspect-square"></div>
         ))}
         {daysInMonth.map((date) => {
           const daySubscriptions = getSubscriptionsForDate(date);
@@ -76,26 +72,33 @@ const Calendar: React.FC<CalendarProps> = ({ subscriptions }) => {
           return (
             <div
               key={date.toString()}
-              className={`h-24 border p-1 ${
-                isSameMonth(date, currentMonth)
-                  ? "bg-white dark:bg-gray-800"
-                  : "bg-gray-100 dark:bg-gray-700"
-              } ${isToday ? "border-blue-500 border-2" : ""}`}
+              className={`aspect-square p-2 rounded-3xl overflow-hidden relative font-light text-md sm:text-xl
+                ${
+                  isSameMonth(date, currentMonth)
+                    ? "bg-neutral-100 dark:bg-neutral-800"
+                    : "bg-neutral-50 dark:bg-neutral-900"
+                }
+                ${isToday ? "font-extrabold" : ""}
+              `}
             >
-              <div className={`text-right ${isToday ? "font-bold" : ""}`}>
+              <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2">
                 {format(date, "d")}
               </div>
-              <div className="mt-1">
+              <div className="h-full flex flex-wrap content-start justify-center gap-1 pt-1 pb-6 overflow-y-auto">
                 {daySubscriptions.map((sub) => (
-                  <img
+                  <div
                     key={sub.id}
-                    src={`/logos/${sub.service?.imagePath || "default.png"}`}
-                    alt={sub.service?.name || "Unknown Service"}
-                    className="w-6 h-6 inline-block mr-1"
+                    className="w-6 h-6 flex-shrink-0"
                     title={`${sub.service?.name || "Unknown Service"} - $${
                       sub.cost
                     }`}
-                  />
+                  >
+                    <img
+                      src={`/logos/${sub.service?.imagePath || "default.png"}`}
+                      alt={sub.service?.name || "Unknown Service"}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
                 ))}
               </div>
             </div>
